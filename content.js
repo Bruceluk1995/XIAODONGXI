@@ -1815,29 +1815,39 @@
       simulateClick(selectEl);
       await sleep(500);
 
-      // 查找弹出的下拉选项
+      // 查找弹出的下拉选项 — 优先完全匹配，再用 startsWith
       const options = document.querySelectorAll('.lv-select-option');
+      let exactMatch = null;
+      let prefixMatch = null;
       for (const opt of options) {
         const optText = opt.textContent.trim();
-        // 使用 startsWith 匹配（因为选项可能包含描述文本）
-        if (optText === targetText || optText.startsWith(targetText)) {
-          simulateClick(opt);
-          await sleep(300);
-          console.log(`[Seedance批量] ${label}: 已选择 "${targetText}"`);
-          return true;
-        }
+        if (optText === targetText) { exactMatch = opt; break; }
+        if (!prefixMatch && optText.startsWith(targetText + ' ')) { prefixMatch = opt; }
+      }
+      const chosen = exactMatch || prefixMatch;
+      if (chosen) {
+        simulateClick(chosen);
+        await sleep(300);
+        console.log(`[Seedance批量] ${label}: 已选择 "${targetText}" (${exactMatch ? '精确' : '前缀'})`);
+        return true;
       }
 
       // 备用: 查找所有可见元素
       const allEls = document.querySelectorAll('[class*="select-option-label"]');
+      let exactEl = null;
+      let prefixEl = null;
       for (const el of allEls) {
+        if (el.offsetParent === null) continue;
         const elText = el.textContent.trim();
-        if ((elText === targetText || elText.startsWith(targetText)) && el.offsetParent !== null) {
-          simulateClick(el);
-          await sleep(300);
-          console.log(`[Seedance批量] ${label}: 备用方式选择 "${targetText}"`);
-          return true;
-        }
+        if (elText === targetText) { exactEl = el; break; }
+        if (!prefixEl && elText.startsWith(targetText + ' ')) { prefixEl = el; }
+      }
+      const chosenEl = exactEl || prefixEl;
+      if (chosenEl) {
+        simulateClick(chosenEl);
+        await sleep(300);
+        console.log(`[Seedance批量] ${label}: 备用方式选择 "${targetText}"`);
+        return true;
       }
 
       // 关闭下拉
