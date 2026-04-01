@@ -3,19 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       width: 100%;
       height: 100%;
       overflow-x: hidden;
       overflow-y: auto;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #1a1a2e;
-      color: #e0e0e0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #FFFFFF;
+      color: #111111;
     }
-    body { padding: 14px; }
+    body {
+      padding: 14px;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 120px;
+      background: radial-gradient(ellipse at 20% 0%, rgba(0,0,0,0.04) 0%, transparent 50%),
+                  radial-gradient(ellipse at 50% 0%, rgba(251,191,36,0.06) 0%, transparent 40%),
+                  radial-gradient(ellipse at 70% 0%, rgba(20,184,166,0.05) 0%, transparent 45%),
+                  radial-gradient(ellipse at 90% 0%, rgba(139,92,246,0.04) 0%, transparent 50%);
+      background-size: 200% 100%;
+      animation: headerGlow 12s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.02) 39px, rgba(0,0,0,0.02) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.02) 39px, rgba(0,0,0,0.02) 40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    @keyframes headerGlow {
+      0%   { background-position: 0% 0%; }
+      100% { background-position: 100% 0%; }
+    }
     body::-webkit-scrollbar { width: 5px; }
-    body::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
+    body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
     body::-webkit-scrollbar-track { background: transparent; }
 
     /* ===== Header ===== */
@@ -27,23 +61,25 @@
     }
     .header h1 {
       font-size: 15px;
-      color: #fff;
+      color: #000;
       display: flex;
       align-items: center;
       gap: 6px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
     .header h1::before { content: '🎬'; }
     .btn-collapse {
       background: none;
       border: none;
-      color: #8b8fa3;
+      color: #9ca3af;
       font-size: 18px;
       cursor: pointer;
       padding: 2px 6px;
-      border-radius: 4px;
+      border-radius: 6px;
       transition: all 0.2s;
     }
-    .btn-collapse:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .btn-collapse:hover { color: #111; background: #f3f4f6; }
 
     /* ===== Global Stats ===== */
     .global-stats {
@@ -51,8 +87,10 @@
       gap: 4px;
       margin-bottom: 10px;
       padding: 6px 8px;
-      background: #16213e;
-      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .task-stat {
       display: flex;
@@ -61,6 +99,7 @@
       font-size: 10px;
       flex: 1;
       justify-content: center;
+      color: #6b7280;
     }
     .task-stat .dot {
       width: 8px;
@@ -68,13 +107,13 @@
       border-radius: 50%;
       display: inline-block;
     }
-    .task-stat .num { font-weight: 700; font-size: 13px; }
-    .dot-pending { background: #f0ad4e; }
-    .dot-running { background: #5bc0de; animation: pulse 1s infinite; }
-    .dot-generating { background: #f0ad4e; animation: pulse 1.5s infinite; }
-    .dot-upscaling { background: #e67e22; animation: pulse 1.5s infinite; }
-    .dot-completed { background: #4caf50; }
-    .dot-failed { background: #e94560; }
+    .task-stat .num { font-weight: 700; font-size: 13px; color: #111; }
+    .dot-pending { background: #f59e0b; }
+    .dot-running { background: #3b82f6; animation: pulse 1s infinite; }
+    .dot-generating { background: #f59e0b; animation: pulse 1.5s infinite; }
+    .dot-upscaling { background: #ea580c; animation: pulse 1.5s infinite; }
+    .dot-completed { background: #22c55e; }
+    .dot-failed { background: #dc2626; }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
@@ -83,30 +122,35 @@
     /* ===== Tabs ===== */
     .tab-bar {
       display: flex;
-      gap: 2px;
+      gap: 0;
       margin-bottom: 10px;
-      background: #0f3460;
-      border-radius: 8px;
-      padding: 3px;
+      background: #ffffff;
+      border-radius: 0;
+      padding: 0;
+      border-bottom: 1px solid #e5e7eb;
     }
     .tab-btn {
       flex: 1;
-      padding: 7px 4px;
+      padding: 8px 4px 10px;
       border: none;
-      border-radius: 6px;
+      border-radius: 0;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       background: transparent;
-      color: #8b8fa3;
+      color: #9ca3af;
       transition: all 0.2s;
       white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
     }
-    .tab-btn:hover { color: #a8d8ea; }
+    .tab-btn:hover { color: #374151; }
     .tab-btn.active {
-      background: #16213e;
-      color: #fff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      background: transparent;
+      color: #000;
+      font-weight: 600;
+      border-bottom: 2px solid #000;
+      box-shadow: none;
     }
     .tab-badge {
       display: inline-block;
@@ -119,7 +163,7 @@
       font-weight: 700;
       margin-left: 3px;
       vertical-align: middle;
-      background: #e94560;
+      background: #dc2626;
       color: #fff;
     }
     .tab-badge:empty { display: none; }
@@ -129,61 +173,74 @@
 
     /* ===== Common ===== */
     .section {
-      background: #16213e;
-      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
       padding: 10px 12px;
       margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .section-title {
       font-size: 12px;
-      color: #8b8fa3;
+      color: #6b7280;
       margin-bottom: 6px;
+      font-weight: 500;
     }
     .conn-status {
       font-size: 10px;
       text-align: center;
       padding: 3px;
-      border-radius: 4px;
+      border-radius: 6px;
       margin-bottom: 6px;
       display: none;
+      font-weight: 500;
     }
     .conn-status.connected {
       display: block;
-      background: rgba(76, 175, 80, 0.15);
-      color: #4caf50;
+      background: rgba(34, 197, 94, 0.08);
+      color: #16a34a;
     }
     .conn-status.disconnected {
       display: block;
-      background: rgba(233, 69, 96, 0.15);
-      color: #e94560;
+      background: rgba(220, 38, 38, 0.08);
+      color: #dc2626;
     }
     .btn {
       width: 100%;
       padding: 8px 12px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-primary {
-      background: linear-gradient(135deg, #e94560, #c23152);
+      background: #000;
       color: #fff;
     }
-    .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+    .btn-primary:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
     .btn-preset {
-      background: linear-gradient(135deg, #0f3460, #16213e);
-      color: #a8d8ea;
-      border: 1px solid #0f3460;
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #d1d5db;
     }
-    .btn-preset:hover:not(:disabled) { border-color: #a8d8ea; }
+    .btn-preset:hover:not(:disabled) {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
     .btn-danger {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      background: #dc2626;
       color: #fff;
     }
-    .btn-danger:hover:not(:disabled) { opacity: 0.9; }
+    .btn-danger:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 2px 8px rgba(220,38,38,0.2);
+    }
     .action-row {
       display: flex;
       gap: 6px;
@@ -194,7 +251,7 @@
       display: flex;
       gap: 6px;
       padding: 10px 0 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid #f3f4f6;
       margin-top: 8px;
     }
     .action-bar .btn {
@@ -205,26 +262,32 @@
     .btn-sm {
       padding: 3px 7px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 10px;
       cursor: pointer;
-      background: #e94560;
+      background: #000;
       color: #fff;
+      transition: all 0.15s ease;
     }
-    .btn-sm:hover { opacity: 0.9; }
-    .btn-sm-cancel { background: #0f3460; color: #a8d8ea; }
+    .btn-sm:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+    .btn-sm-cancel {
+      background: #ffffff;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+    }
     .cfg-select {
       width: 100%;
-      background: #0f3460;
-      color: #a8d8ea;
-      border: 1px solid #16213e;
-      border-radius: 4px;
-      padding: 3px 5px;
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 4px 6px;
       font-size: 11px;
       margin-top: 2px;
       cursor: pointer;
+      font-family: inherit;
     }
-    .cfg-select:focus { outline: none; border-color: #a8d8ea; }
+    .cfg-select:focus { outline: none; border-color: #000; box-shadow: 0 0 0 1px #000; }
 
     /* ===== Tab 1: 接收任务 ===== */
     .api-config-row {
@@ -233,32 +296,33 @@
       gap: 4px;
       margin-bottom: 8px;
       font-size: 10px;
-      color: #8b8fa3;
+      color: #6b7280;
     }
     .api-url-input {
       flex: 1;
-      background: #0f3460;
-      border: 1px solid #16213e;
-      border-radius: 4px;
-      color: #e0e0e0;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      color: #111;
       padding: 4px 6px;
       font-size: 10px;
+      font-family: inherit;
     }
-    .api-url-input:focus { outline: none; border-color: #a8d8ea; }
+    .api-url-input:focus { outline: none; border-color: #000; box-shadow: 0 0 0 1px #000; }
     .sse-toggle-btn {
       font-size: 9px;
       padding: 3px 6px;
-      border: 1px solid #0f3460;
-      border-radius: 4px;
-      background: #16213e;
-      color: #8b8fa3;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #6b7280;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
     }
     .sse-toggle-btn.active {
-      background: #e94560;
-      border-color: #e94560;
+      background: #000;
+      border-color: #000;
       color: #fff;
     }
     .sse-info-row {
@@ -267,13 +331,13 @@
       gap: 4px;
       margin-bottom: 8px;
       font-size: 10px;
-      color: #8b8fa3;
+      color: #6b7280;
     }
     .sse-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #555;
+      background: #d1d5db;
       display: inline-block;
     }
     .recv-controls {
@@ -285,26 +349,30 @@
       flex: 1;
       padding: 7px 4px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
     .recv-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-fetch {
-      background: #0f3460;
-      color: #a8d8ea;
-      border: 1px solid #0f3460;
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #d1d5db;
     }
-    .btn-fetch:hover { border-color: #a8d8ea; }
+    .btn-fetch:hover { background: #f9fafb; border-color: #9ca3af; }
     .btn-auto {
-      background: linear-gradient(135deg, #e94560, #c23152);
+      background: #000;
       color: #fff;
     }
-    .btn-auto:hover { opacity: 0.9; }
+    .btn-auto:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
     .btn-auto.running, .btn-auto.active {
-      background: linear-gradient(135deg, #f0ad4e, #e89b2e);
+      background: #f59e0b;
+      color: #000;
     }
     .task-delay-section {
       display: flex;
@@ -312,34 +380,36 @@
       gap: 6px;
       margin-top: 8px;
       font-size: 11px;
-      color: #8b8fa3;
+      color: #6b7280;
     }
     .task-delay-input {
       width: 50px;
-      background: #16213e;
-      border: 1px solid #0f3460;
-      border-radius: 4px;
-      color: #e0e0e0;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      color: #111;
       padding: 3px 5px;
       font-size: 11px;
       text-align: center;
+      font-family: inherit;
     }
-    .task-delay-input:focus { outline: none; border-color: #a8d8ea; }
+    .task-delay-input:focus { outline: none; border-color: #000; box-shadow: 0 0 0 1px #000; }
     .recv-log {
       margin-top: 6px;
       max-height: 120px;
       overflow-y: auto;
       font-size: 10px;
-      color: #8b8fa3;
-      background: #111;
-      border-radius: 4px;
+      color: #6b7280;
+      background: #fafafa;
+      border: 1px solid #f3f4f6;
+      border-radius: 8px;
       padding: 5px;
     }
     .recv-log::-webkit-scrollbar { width: 3px; }
-    .recv-log::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 2px; }
+    .recv-log::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
     .recv-log p { margin-bottom: 2px; }
-    .recv-log .success { color: #4caf50; }
-    .recv-log .error { color: #e94560; }
+    .recv-log .success { color: #16a34a; }
+    .recv-log .error { color: #dc2626; }
 
     /* ===== Tab 2: 手动提交 ===== */
     .preset-info {
@@ -348,31 +418,33 @@
       gap: 5px;
     }
     .preset-tag {
-      background: #0f3460;
-      border-radius: 4px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
       padding: 3px 6px;
       font-size: 11px;
-      color: #a8d8ea;
+      color: #374151;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .upload-area {
-      border: 2px dashed #0f3460;
-      border-radius: 8px;
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
       padding: 16px 10px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
       margin-bottom: 10px;
+      background: #fafafa;
     }
     .upload-area:hover {
-      border-color: #e94560;
-      background: rgba(233, 69, 96, 0.05);
+      border-color: #000;
+      background: #f9fafb;
     }
     .upload-area .icon { font-size: 28px; margin-bottom: 4px; }
-    .upload-area .text { font-size: 12px; color: #8b8fa3; }
-    .upload-area .hint { font-size: 10px; color: #555; margin-top: 2px; }
+    .upload-area .text { font-size: 12px; color: #6b7280; }
+    .upload-area .hint { font-size: 10px; color: #9ca3af; margin-top: 2px; }
     #fileInput { display: none; }
     .file-list {
       max-height: 120px;
@@ -380,16 +452,18 @@
       margin-bottom: 10px;
     }
     .file-list::-webkit-scrollbar { width: 3px; }
-    .file-list::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 2px; }
+    .file-list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
     .file-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 3px 6px;
       font-size: 11px;
-      background: #16213e;
-      border-radius: 4px;
+      background: #f9fafb;
+      border: 1px solid #f3f4f6;
+      border-radius: 6px;
       margin-bottom: 2px;
+      color: #374151;
     }
     .file-item .name {
       flex: 1;
@@ -399,7 +473,7 @@
       margin-right: 6px;
     }
     .file-item .remove {
-      color: #e94560;
+      color: #dc2626;
       cursor: pointer;
       font-size: 13px;
       flex-shrink: 0;
@@ -410,10 +484,10 @@
       justify-content: space-between;
       margin-bottom: 10px;
     }
-    .count { font-size: 12px; color: #a8d8ea; }
+    .count { font-size: 12px; color: #374151; font-weight: 500; }
     .clear-btn {
       font-size: 11px;
-      color: #e94560;
+      color: #dc2626;
       cursor: pointer;
       background: none;
       border: none;
@@ -428,21 +502,21 @@
     .qi-tag {
       font-size: 10px;
       padding: 2px 7px;
-      background: #0f3460;
-      color: #a8d8ea;
-      border: 1px solid #1a3a6a;
+      background: #f9fafb;
+      color: #374151;
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s;
     }
     .qi-tag:hover {
-      background: #e94560;
+      background: #000;
       color: #fff;
-      border-color: #e94560;
+      border-color: #000;
     }
     .file-item .insert-tag {
-      color: #a8d8ea;
+      color: #6b7280;
       cursor: pointer;
       font-size: 11px;
       flex-shrink: 0;
@@ -452,10 +526,10 @@
     }
     .file-item .insert-tag:hover {
       opacity: 1;
-      color: #e94560;
+      color: #000;
     }
     .file-item .preview-btn {
-      color: #a8d8ea;
+      color: #6b7280;
       cursor: pointer;
       font-size: 11px;
       flex-shrink: 0;
@@ -465,14 +539,15 @@
     }
     .file-item .preview-btn:hover {
       opacity: 1;
-      color: #4fc3f7;
+      color: #3b82f6;
     }
     /* -- 文件预览弹窗 -- */
     .file-preview-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
       z-index: 99999;
       align-items: center;
       justify-content: center;
@@ -485,15 +560,15 @@
     .file-preview-overlay video {
       max-width: 90%;
       max-height: 85%;
-      border-radius: 8px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
       object-fit: contain;
     }
     .file-preview-overlay .preview-close {
       position: absolute;
       top: 10px; right: 14px;
       font-size: 22px;
-      color: #fff;
+      color: #374151;
       cursor: pointer;
       opacity: 0.8;
       z-index: 1;
@@ -505,8 +580,9 @@
       left: 50%;
       transform: translateX(-50%);
       font-size: 12px;
-      color: #ccc;
-      background: rgba(0,0,0,0.5);
+      color: #6b7280;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #e5e7eb;
       padding: 3px 12px;
       border-radius: 10px;
       white-space: nowrap;
@@ -518,39 +594,39 @@
     .prompt-input {
       width: 100%;
       height: 50px;
-      background: #16213e;
-      border: 1px solid #0f3460;
-      border-radius: 6px;
-      color: #e0e0e0;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      color: #111;
       padding: 6px 8px;
       font-size: 11px;
       resize: vertical;
       font-family: inherit;
     }
-    .prompt-input::placeholder { color: #555; }
-    .prompt-input:focus { outline: none; border-color: #a8d8ea; }
+    .prompt-input::placeholder { color: #9ca3af; }
+    .prompt-input:focus { outline: none; border-color: #000; box-shadow: 0 0 0 1px #000; }
     .progress {
       margin-top: 10px;
       display: none;
     }
     .progress.active { display: block; }
     .progress-bar {
-      background: #0f3460;
-      border-radius: 4px;
+      background: #f3f4f6;
+      border-radius: 6px;
       height: 5px;
       overflow: hidden;
       margin-bottom: 4px;
     }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #e94560, #c23152);
-      border-radius: 4px;
+      background: #000;
+      border-radius: 6px;
       transition: width 0.3s;
       width: 0%;
     }
     .progress-text {
       font-size: 11px;
-      color: #8b8fa3;
+      color: #6b7280;
       text-align: center;
     }
     .log {
@@ -558,16 +634,17 @@
       max-height: 80px;
       overflow-y: auto;
       font-size: 10px;
-      color: #8b8fa3;
-      background: #111;
-      border-radius: 4px;
+      color: #6b7280;
+      background: #fafafa;
+      border: 1px solid #f3f4f6;
+      border-radius: 8px;
       padding: 5px;
       display: none;
     }
     .log.active { display: block; }
     .log p { margin-bottom: 2px; }
-    .log .success { color: #4caf50; }
-    .log .error { color: #e94560; }
+    .log .success { color: #16a34a; }
+    .log .error { color: #dc2626; }
 
     /* ===== Tab 3: 任务列表 ===== */
     .task-list-controls {
@@ -578,63 +655,64 @@
     .task-list-controls button {
       font-size: 10px;
       padding: 4px 8px;
-      border: 1px solid #0f3460;
-      border-radius: 4px;
-      background: #16213e;
-      color: #a8d8ea;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #374151;
       cursor: pointer;
       transition: all 0.2s;
     }
     .task-list-controls button:hover {
-      border-color: #a8d8ea;
-      background: #0f3460;
+      border-color: #9ca3af;
+      background: #f9fafb;
     }
     .task-list {
       max-height: 500px;
       overflow-y: auto;
     }
     .task-list::-webkit-scrollbar { width: 3px; }
-    .task-list::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 2px; }
+    .task-list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
     .task-list:empty::after {
       content: '暂无任务';
       display: block;
       text-align: center;
       padding: 20px 8px;
       font-size: 11px;
-      color: #555;
+      color: #9ca3af;
     }
     .task-card {
-      background: #16213e;
-      border: 1px solid #0f3460;
-      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
       padding: 8px 10px;
       margin-bottom: 6px;
       transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
-    .task-card:hover { border-color: #a8d8ea; }
+    .task-card:hover { border-color: #d1d5db; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
     .task-card.status-running,
     .task-card.status-configuring {
-      border-color: #5bc0de;
-      box-shadow: 0 0 6px rgba(91, 192, 222, 0.2);
+      border-color: #93c5fd;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.1);
     }
     .task-card.status-generating {
-      border-color: #f0ad4e;
-      box-shadow: 0 0 6px rgba(240, 173, 78, 0.2);
+      border-color: #fcd34d;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.1);
     }
     .task-card.status-uploading,
     .task-card.status-uploading_hd {
-      border-color: #9b59b6;
-      box-shadow: 0 0 6px rgba(155, 89, 182, 0.2);
+      border-color: #c4b5fd;
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.1);
     }
     .task-card.status-upscaling {
-      border-color: #e67e22;
-      box-shadow: 0 0 6px rgba(230, 126, 34, 0.2);
+      border-color: #fdba74;
+      box-shadow: 0 0 8px rgba(234, 88, 12, 0.1);
     }
     .task-card.status-completed {
       opacity: 0.6;
-      border-color: #4caf50;
+      border-color: #86efac;
     }
-    .task-card.status-failed { border-color: #e94560; }
+    .task-card.status-failed { border-color: #fca5a5; }
     .task-card-header {
       display: flex;
       align-items: center;
@@ -644,32 +722,32 @@
     .task-code {
       font-size: 11px;
       font-weight: 600;
-      color: #a8d8ea;
+      color: #111;
       font-family: 'Consolas', 'Monaco', monospace;
     }
     .task-status-badge {
       font-size: 9px;
       padding: 1px 5px;
-      border-radius: 3px;
+      border-radius: 4px;
       font-weight: 600;
     }
-    .badge-pending { background: rgba(240, 173, 78, 0.2); color: #f0ad4e; }
+    .badge-pending { background: rgba(245, 158, 11, 0.1); color: #d97706; }
     .badge-running,
-    .badge-configuring { background: rgba(91, 192, 222, 0.2); color: #5bc0de; }
-    .badge-generating { background: rgba(240, 173, 78, 0.2); color: #f0ad4e; }
+    .badge-configuring { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
+    .badge-generating { background: rgba(245, 158, 11, 0.1); color: #d97706; }
     .badge-uploading,
-    .badge-uploading_hd { background: rgba(155, 89, 182, 0.2); color: #9b59b6; }
-    .badge-upscaling { background: rgba(230, 126, 34, 0.2); color: #e67e22; }
-    .badge-completed { background: rgba(76, 175, 80, 0.2); color: #4caf50; }
-    .badge-failed { background: rgba(233, 69, 96, 0.2); color: #e94560; }
+    .badge-uploading_hd { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
+    .badge-upscaling { background: rgba(234, 88, 12, 0.1); color: #ea580c; }
+    .badge-completed { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+    .badge-failed { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
     .task-card-body {
       font-size: 10px;
-      color: #8b8fa3;
+      color: #6b7280;
       margin-bottom: 4px;
     }
     .task-desc { margin-bottom: 2px; }
     .task-prompt {
-      color: #ccc;
+      color: #374151;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -682,11 +760,11 @@
       margin-bottom: 4px;
     }
     .task-meta-tag {
-      background: #0f3460;
-      border-radius: 3px;
+      background: #f3f4f6;
+      border-radius: 4px;
       padding: 1px 4px;
       font-size: 9px;
-      color: #a8d8ea;
+      color: #6b7280;
     }
     .task-card-actions {
       display: flex;
@@ -697,21 +775,22 @@
       font-size: 10px;
       padding: 2px 8px;
       border: none;
-      border-radius: 3px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
     .btn-exec {
-      background: #e94560;
+      background: #000;
       color: #fff;
     }
-    .btn-exec:hover { opacity: 0.8; }
+    .btn-exec:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
     .btn-exec:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-skip {
-      background: #0f3460;
-      color: #a8d8ea;
+      background: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
     }
-    .btn-skip:hover { background: #16213e; }
+    .btn-skip:hover { background: #e5e7eb; }
   </style>
 </head>
 <body>
@@ -750,8 +829,8 @@
       <div class="sse-info-row" id="sseStatusRow" style="display:none;">
         <span class="sse-dot" id="sseIndicator"></span>
         <span id="sseStatusText" style="flex:1;">未连接</span>
-        <span style="color:#555;">ID:</span>
-        <span id="sseClientId" style="font-family:monospace;font-size:9px;color:#a8d8ea;">-</span>
+        <span style="color:#9ca3af;">ID:</span>
+        <span id="sseClientId" style="font-family:monospace;font-size:9px;color:#374151;">-</span>
       </div>
     </div>
 
@@ -772,7 +851,7 @@
 
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
       <span class="section-title" style="margin-bottom:0;">📝 日志</span>
-      <button style="font-size:9px;padding:2px 6px;border:1px solid #0f3460;border-radius:3px;background:#16213e;color:#8b8fa3;cursor:pointer;" id="btnClearLog">清空</button>
+      <button style="font-size:9px;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;background:#fff;color:#6b7280;cursor:pointer;" id="btnClearLog">清空</button>
     </div>
     <div class="recv-log" id="log"></div>
   </div>
@@ -782,7 +861,7 @@
     <div class="section">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
         <div class="section-title" style="margin-bottom:0;">预设参数</div>
-        <span id="presetEditToggle" style="cursor:pointer;font-size:10px;color:#a8d8ea;">✏️ 编辑</span>
+        <span id="presetEditToggle" style="cursor:pointer;font-size:10px;color:#374151;">✏️ 编辑</span>
       </div>
       <div class="preset-info" id="presetDisplay">
         <div class="preset-tag" id="tagModel">🤖 Seedance 2.0</div>
@@ -792,7 +871,7 @@
       </div>
       <div id="presetEditor" style="display:none;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-          <label style="font-size:10px;color:#8b8fa3;">
+          <label style="font-size:10px;color:#6b7280;">
             模型
             <select id="cfgModel" class="cfg-select">
               <option value="Seedance 2.0">Seedance 2.0</option>
@@ -803,7 +882,7 @@
               <option value="视频 3.0">视频 3.0</option>
             </select>
           </label>
-          <label style="font-size:10px;color:#8b8fa3;">
+          <label style="font-size:10px;color:#6b7280;">
             参考模式
             <select id="cfgRefMode" class="cfg-select">
               <option value="全能参考">全能参考</option>
@@ -812,7 +891,7 @@
               <option value="主体参考">主体参考</option>
             </select>
           </label>
-          <label style="font-size:10px;color:#8b8fa3;">
+          <label style="font-size:10px;color:#6b7280;">
             画面比例
             <select id="cfgRatio" class="cfg-select">
               <option value="16:9">16:9</option>
@@ -823,7 +902,7 @@
               <option value="21:9">21:9</option>
             </select>
           </label>
-          <label style="font-size:10px;color:#8b8fa3;">
+          <label style="font-size:10px;color:#6b7280;">
             视频时长
             <select id="cfgDuration" class="cfg-select">
               <option value="5s">5s</option>
@@ -882,22 +961,22 @@
       <div class="section-title" style="margin-bottom:6px;">📥 视频检索与下载</div>
       <div style="display:flex;gap:5px;align-items:center;">
         <input type="text" id="videoTaskCodeInput" placeholder="输入任务ID，如 SD-20260215-67co-002"
-               style="flex:1;padding:6px 8px;border:1px solid #0f3460;border-radius:5px;background:#0d1b3e;color:#e0e0e0;font-size:11px;outline:none;font-family:monospace;">
+               style="flex:1;padding:6px 8px;border:1px solid #d1d5db;border-radius:6px;background:#fff;color:#111;font-size:11px;outline:none;font-family:monospace;">
         <button class="btn btn-preset" id="btnSearchVideo" style="width:auto;white-space:nowrap;padding:6px 10px;font-size:11px;">🔍 检索</button>
       </div>
       <div id="videoSearchResult" style="margin-top:8px;display:none;">
-        <div id="videoStatusText" style="font-size:11px;color:#8b8fa3;margin-bottom:6px;"></div>
+        <div id="videoStatusText" style="font-size:11px;color:#6b7280;margin-bottom:6px;"></div>
         <div id="videoHDBadge" style="display:none;margin-bottom:6px;">
           <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:bold;letter-spacing:0.5px;"></span>
         </div>
         <div id="videoActions" style="display:none;">
-          <div id="videoPreview" style="margin-bottom:6px;border-radius:6px;overflow:hidden;background:#000;"></div>
+          <div id="videoPreview" style="margin-bottom:6px;border-radius:8px;overflow:hidden;background:#f3f4f6;"></div>
           <div style="display:flex;gap:5px;flex-wrap:wrap;">
             <button class="btn btn-primary" id="btnDownloadVideo" style="font-size:11px;padding:6px 8px;">⬇️ 原生下载</button>
             <button class="btn btn-preset" id="btnOpenVideo" style="font-size:11px;padding:6px 8px;">🔗 新标签打开</button>
             <button class="btn btn-preset" id="btnUpscaleVideo" style="font-size:11px;padding:6px 8px;display:none;">🔺 提升分辨率</button>
             <button class="btn btn-primary" id="btnDownloadHD" style="font-size:11px;padding:6px 8px;display:none;">⬇️ 下载高清</button>
-            <button class="btn btn-primary" id="btnUploadServer" style="font-size:11px;padding:6px 8px;background:#0d7377;border-color:#0d7377;">📤 上传服务器</button>
+            <button class="btn btn-primary" id="btnUploadServer" style="font-size:11px;padding:6px 8px;background:#0f766e;border-color:#0f766e;">📤 上传服务器</button>
           </div>
         </div>
       </div>
