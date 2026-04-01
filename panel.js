@@ -1415,18 +1415,16 @@
         type: f.fileType,
       }));
 
-      const promptWithCode = task.prompt
-        ? `${task.taskCode}，${task.prompt}`
-        : task.taskCode;
+      const finalPrompt = task.prompt || '';
 
       addLog(`📤 上传 ${filesData.length} 张参考图 + 填写提示词`);
-      addLog(`📝 提示词: "${promptWithCode.substring(0, 60)}..."`);
+      addLog(`📝 提示词: "${finalPrompt.substring(0, 60)}..."`);
 
       // 3. 调用 doGenerate
       const response = await chrome.tabs.sendMessage(tab.id, {
         action: 'doGenerate',
         files: filesData,
-        prompt: promptWithCode,
+        prompt: finalPrompt,
       });
 
       if (response && response.success) {
